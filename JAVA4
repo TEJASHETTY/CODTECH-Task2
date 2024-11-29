@@ -1,0 +1,14 @@
+import React from "react";
+import Profile from "./components/Profile";
+import PostList from "./components/PostList";
+import PostForm from "./components/PostForm";
+
+const App = () => (
+  <div>
+    <Profile />
+    <PostForm />
+    <PostList />
+  </div>
+);
+
+export default App;
