@@ -1,0 +1,21 @@
+import React, { useState } from "react";
+import axios from "axios";
+
+const PostForm = () => {
+  const [content, setContent] = useState("");
+
+  const handleSubmit = async () => {
+    await axios.post("http://localhost:5000/posts", { content });
+    setContent("");
+  };
+
+  return (
+    <div>
+      <h2>Create a Post</h2>
+      <textarea value={content} onChange={(e) => setContent(e.target.value)} />
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  );
+};
+
+export default PostForm;
