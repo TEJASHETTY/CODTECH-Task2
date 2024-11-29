@@ -1,0 +1,29 @@
+import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:5000");
+
+const PostList = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    socket.on("newPost", (post) => {
+      setPosts((prevPosts) => [post, ...prevPosts]);
+    });
+
+    return () => socket.off("newPost");
+  }, []);
+
+  return (
+    <div>
+      <h2>Posts</h2>
+      <ul>
+        {posts.map((post, index) => (
+          <li key={index}>{post}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default PostList;
