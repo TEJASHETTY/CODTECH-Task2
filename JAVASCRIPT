@@ -1,0 +1,39 @@
+const express = require("express");
+const cors = require("cors");
+const multer = require("multer");
+const http = require("http");
+const { Server } = require("socket.io");
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+const upload = multer({ dest: "uploads/" });
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Upload profile picture
+app.post("/upload", upload.single("profilePicture"), (req, res) => {
+  res.send("File uploaded successfully");
+});
+
+// Post storage
+let posts = [];
+
+// Post new content
+app.post("/posts", (req, res) => {
+  const { content } = req.body;
+  posts.push(content);
+  io.emit("newPost", content); // Real-time broadcast
+  res.send("Post added!");
+});
+
+server.listen(5000, () => {
+  console.log("Server running on http://localhost:5000");
+});
